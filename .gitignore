@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+
+__pycache__
+cmake-build-debug

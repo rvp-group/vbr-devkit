@@ -12,7 +12,8 @@ import numpy as np
 import cv2
 from utils import (
     read_intrinsics,
-    read_extrinsics
+    read_extrinsics,
+    read_poses
 )
 
 
@@ -50,6 +51,7 @@ def save_projection_rgb(filename: str, proj_cloud: np.ndarray, max_depth: float,
 
     cv2.imwrite(path.splitext(filename)[0] + '.jpg', rgb_image)
 
+
 def save_projection(filename: str, proj_cloud: np.ndarray, save_numpy: bool, depth_scale: int):
     proj_img = (depth_scale * proj_cloud).astype(np.uint16)
 
@@ -79,6 +81,11 @@ if __name__ == '__main__':
                         help='Scaling value "S" applied during the projection of the cloud.'
                              ' (proj(x,y)<uint16> = (S * depth(x,y)<float>).cast<uint16>')
     parser.add_argument('--max-depth', type=float, default=60.0, required=False)
+    parser.add_argument('--accumulate-clouds', type=int)
+    parser.add_argument('--poses', type=str, required=False)
+    parser.add_argument('--poses-quaternion-format', type=str, default='xyzw', choices=['xyzw', 'wxyz'], required=False)
+    parser.add_argument('--poses-format', type=str, default='tum', choices=['tum'], required=False)
+    parser.add_argument('--poses-skip-lines', type=int, default=1, required=False)
     args = parser.parse_args()
 
     K, dist_coeffs, image_size = read_intrinsics(args.intrinsics)
@@ -88,8 +95,7 @@ if __name__ == '__main__':
         print('Creating output directory', args.output_dir)
         os.mkdir(args.output_dir)
 
-    input_cloud_files = [f for f in os.listdir(args.input_dir) if path.isfile(path.join(args.input_dir, f))]
-    input_cloud_files.sort()
+    input_cloud_files = sorted([f for f in os.listdir(args.input_dir) if path.isfile(path.join(args.input_dir, f))])
     projected_clouds = (
         project_cloud(path.join(args.input_dir, f), K, dist_coeffs, image_size, cam_T_cloud, args.max_depth) for f in
         tqdm(input_cloud_files, 'Projecting Clouds'))
@@ -104,17 +110,20 @@ if __name__ == '__main__':
             print('Creating output rgb directory', output_rgb_dir)
             os.mkdir(output_rgb_dir)
 
-    for proj, filename in zip(projected_clouds, input_cloud_files):
-        save_projection(path.join(args.output_dir, filename), proj, args.save_numpy, args.depth_scale)
-        if input_rgb_files is not None:
-            # print('Input RGB directory:', args.input_rgb_dir)
-            # print('Input RGB files:', input_rgb_files)
-            # print('Output RGB directory:', output_rgb_dir)
-            # print('Filename:', filename)
-            # Find corresponding RGB image given 'filename'
-            rgb_name_wno_extension = path.splitext(filename)[0]
-            if rgb_name_wno_extension in input_rgb_files_wno_extension:
-                rgb_filename_index = input_rgb_files_wno_extension.index(rgb_name_wno_extension)
-                rgb_filename = path.join(args.input_rgb_dir, input_rgb_files[rgb_filename_index])
-                save_projection_rgb(path.join(output_rgb_dir, filename), proj, args.max_depth, rgb_filename)
+    if args.accumulate_clouds is not None:
+        if args.poses is None:
+            print('flag accumulate-clouds is set but no poses file is passed. Use argument --poses <cloud-poses-file>')
+            exit(-1)
+        poses = read_poses(args.poses, args.poses_format, args.poses_quaternion_format, args.poses_skip_lines)
+
+    else:
+        for proj, filename in zip(projected_clouds, input_cloud_files):
+            save_projection(path.join(args.output_dir, filename), proj, args.save_numpy, args.depth_scale)
+            if input_rgb_files is not None:
+                # Find corresponding RGB image given 'filename'
+                rgb_name_wno_extension = path.splitext(filename)[0]
+                if rgb_name_wno_extension in input_rgb_files_wno_extension:
+                    rgb_filename_index = input_rgb_files_wno_extension.index(rgb_name_wno_extension)
+                    rgb_filename = path.join(args.input_rgb_dir, input_rgb_files[rgb_filename_index])
+                    save_projection_rgb(path.join(output_rgb_dir, filename), proj, args.max_depth, rgb_filename)
     exit(0)

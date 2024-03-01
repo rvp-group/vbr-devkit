@@ -60,7 +60,7 @@ if __name__ == '__main__':
 
     input_bag = rosbag.Bag(args.input_bag)
 
-    if not path.isdir(args.output_dest):
+    if not path.isdir(args.output_dir):
         print('Creating output directory', args.output_dir)
         os.mkdir(args.output_dir)
 
