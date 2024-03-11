@@ -66,22 +66,24 @@ class KittiTopicHandler:
         self.metadata["num_messages"] += 1
 
     def _save_cloud(self, data: PointCloudXf, timestamp):
-        dest_path = self.data_f / self.format_fn(self.metadata["num_messages"]) + ".bin"
+        dest_path = self.data_f / Path(self.format_fn(self.metadata["num_messages"]) + ".bin")
         # Save fields to metadata to recover it later.
         # We assume fields to remain constant through data of this topic
-        # if "fields" not in self.metadata.keys():
-        #     self.metadata["fields"] = data.fields
+        if "fields" not in self.metadata.keys():
+            self.metadata["fields"] = [
+                f.__dict__ for f in data.fields
+            ]
 
         data.points.tofile(dest_path)
 
         ...
 
     def _save_image(self, data: Image, timestamp: float):
-        dest_path = self.data_f / self.format_fn(self.num_messages) + ".png"
+        dest_path = self.data_f / Path(self.format_fn(self.metadata["num_messages"]) + ".png")
         if not "encoding" in self.metadata.keys():
             self.metadata["encoding"] = data.encoding
 
-        cv2.imwrite(dest_path, data.image)
+        cv2.imwrite(str(dest_path), data.image)
 
     def _save_imu(self, data: Imu, timestamp: float):
         if not self.imu_dest:
@@ -92,7 +94,6 @@ class KittiTopicHandler:
                                    data.linear_acceleration_covariance, data.angular_velocity_covariance,
                                    data.orientation_covariance), axis=0)
         self.imu_dest.write(",".join(map(str, imu_line.tolist())) + "\n")
-        ...
 
     def topic(self) -> str:
         return self.metadata["topic"]
@@ -105,13 +106,37 @@ class KittiTopicHandler:
                 str(datetime.fromtimestamp(float(t) / 1e9)) + "\n" for t in self.timestamps])
 
 
-class KittiReader:
-    ...
-
-
 class KittiWriter:
     def __init__(self, data_dir: Path):
         data_dir.mkdir(parents=True, exist_ok=True)
+        self.destination_dir = data_dir
         self.data_handles = {}
 
-    ...
+    def __enter__(self):
+        return self
+
+    def publish(self, topic: str, timestamp, message: Union[PointCloudXf, Image, Imu]):
+        if topic not in self.data_handles.keys():
+            # Infer path to store stuff
+            # Remove first / on topic
+            # Remove /image_raw if present
+            handle_dir = topic[1:].replace("/image_raw", "").replace("/data", "").replace("/", "_")
+            # print(handle_dir)
+            self.data_handles[topic] = KittiTopicHandler(self.destination_dir / Path(handle_dir), topic,
+                                                         lambda x: f"{x:010d}")
+
+        self.data_handles[topic].push_back(message, timestamp)
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        for handle in self.data_handles:
+            self.data_handles[handle].close()
+
+# from ros import RosReader
+# from tqdm import tqdm
+
+# if __name__ == "__main__":
+#     with KittiWriter(Path("/home/eg/Desktop/kitti_test")) as writer:
+#         with RosReader(Path("/home/eg/data/vbr/vbr_campus/campus1_short.bag")) as reader:
+#             for timestamp, topic, message in tqdm(reader, desc="Reading bag"):
+#                 # print(f"Topic={topic} | Timestamp={timestamp} (type=({type(timestamp)}) | message_type=({type(message)})")
+#                 writer.publish(topic, timestamp, message)

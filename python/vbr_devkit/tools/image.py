@@ -22,5 +22,3 @@ class Image:
         im.encoding = msg.encoding
 
         return im
-
-

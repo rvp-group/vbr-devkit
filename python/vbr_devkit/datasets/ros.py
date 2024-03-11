@@ -1,14 +1,22 @@
 import os
 import sys
 from pathlib import Path
-from typing import Sequence, List
+from typing import Sequence, List, Tuple, Union, Any
 import natsort
 
 from vbr_devkit.tools import convert_msg_to_datum
+from vbr_devkit.tools import PointCloudXf, Image, Imu
 
 
 class RosReader:
-    def __init__(self, data_dir: Sequence[Path], topics: List[str] = None, *args, **kwargs):
+    def __init__(self, data_dir: Sequence[Path], topics: List[str] = None, *args,
+                 **kwargs):
+        """
+        :param data_dir: Directory containing rosbags or path to a rosbag file
+        :param topics: Topics to read. If None, all topics will be read
+        :param args:
+        :param kwargs:
+        """
         try:
             from rosbags.highlevel import AnyReader
         except ModuleNotFoundError:
@@ -33,16 +41,22 @@ class RosReader:
             connections = [x for x in self.bag.connections if x.topic in topics]
         self.msgs = self.bag.messages(connections=connections)
 
-    def __del__(self):
-        if hasattr(self, "bag"):
-            self.bag.close()
+    # def __del__(self):
+    #     if hasattr(self, "bag"):
+    #         self.bag.close()
 
     def __len__(self):
         return self.bag.message_count
 
-    def __getitem__(self, item):
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if hasattr(self, "bag"):
+            self.bag.close()
+
+    def __getitem__(self, item) -> Tuple[int, str, Union[PointCloudXf, Image, Imu, Any]]:
         connection, timestamp, rawdata = next(self.msgs)
         msg = self.bag.deserialize(rawdata, connection.msgtype)
-        # msg = deserialize_cdr(ros1_to_cdr(rawdata, connection.msgtype), connection.msgtype)
-        datum = convert_msg_to_datum(msg, connection.msgtype)
-        return timestamp, connection.topic, datum
+        msg = convert_msg_to_datum(msg, connection.msgtype)
+        return timestamp, connection.topic, msg

@@ -1,6 +1,10 @@
 from typing import Any, Union
 
-import numpy as np
+from rosbags.typesys.types import (
+    sensor_msgs__msg__Imu,
+    sensor_msgs__msg__Image,
+    sensor_msgs__msg__PointCloud2
+)
 from vbr_devkit.tools.image import Image
 from vbr_devkit.tools.imu import Imu
 from vbr_devkit.tools.point_cloud2 import PointCloudXf
@@ -14,5 +18,5 @@ conversion_dict = {
 
 def convert_msg_to_datum(
         msg: Any,
-        msg_type: str) -> Union[PointCloudXf, np.ndarray]:
+        msg_type: str) -> Union[PointCloudXf, Image, Imu]:
     return conversion_dict[msg_type](msg)
