@@ -131,12 +131,12 @@ class KittiWriter:
         for handle in self.data_handles:
             self.data_handles[handle].close()
 
-# from ros import RosReader
-# from tqdm import tqdm
+from ros import RosReader
+from tqdm import tqdm
 
-# if __name__ == "__main__":
-#     with KittiWriter(Path("/home/eg/Desktop/kitti_test")) as writer:
-#         with RosReader(Path("/home/eg/data/vbr/vbr_campus/campus1_short.bag")) as reader:
-#             for timestamp, topic, message in tqdm(reader, desc="Reading bag"):
-#                 # print(f"Topic={topic} | Timestamp={timestamp} (type=({type(timestamp)}) | message_type=({type(message)})")
-#                 writer.publish(topic, timestamp, message)
+if __name__ == "__main__":
+    with KittiWriter(Path("/home/eg/data/vbr/campus/run00/kitti")) as writer:
+        with RosReader(Path("/home/eg/data/vbr/campus/run00/run00_sync_0.bag")) as reader:
+            for timestamp, topic, message in tqdm(reader, desc="Reading bag"):
+                # print(f"Topic={topic} | Timestamp={timestamp} (type=({type(timestamp)}) | message_type=({type(message)})")
+                writer.publish(topic, timestamp, message)
