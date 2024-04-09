@@ -6,11 +6,12 @@ from tqdm import tqdm
 from typing import List
 
 
-def main(input_bag_f: str, output_dir: str, size_gb: float = 5, skip_topics: List[str] = ["/imu/odometry"]):
+def main(input_bag_f: str, output_dir: str, size_gb: float = 5, skip_topics: List[str] = []):
     try:
         from rosbag import Bag
     except ModuleNotFoundError:
-        print("rosbags library not installed, run 'pip install -U rosbag'")
+        #TODO: Rewrite error message
+        print("rosbag library not installed")
         sys.exit(-1)
 
     print(f'Opening input bag: {Path(input_bag_f)}')

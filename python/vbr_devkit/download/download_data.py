@@ -6,7 +6,7 @@ from rich.console import Console
 from rich.progress import Progress
 from rich.panel import Panel
 
-DATASET_LINK = "192.168.0.20"
+DATASET_LINK = "151.100.59.119"
 FTP_USER = "anonymous"
 
 vbr_downloads = [

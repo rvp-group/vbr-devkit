@@ -73,6 +73,10 @@ class KittiTopicHandler:
             self.metadata["fields"] = [
                 f.__dict__ for f in data.fields
             ]
+            # Dump data.points.datatype in pickle (this shit is a workaround and should be fixed asap)
+            import pickle
+            with open(self.data_f / ".dtype.pkl", "wb") as f:
+                pickle.dump(data.points.dtype, f)
 
         data.points.tofile(dest_path)
 
@@ -135,8 +139,8 @@ from ros import RosReader
 from tqdm import tqdm
 
 if __name__ == "__main__":
-    with KittiWriter(Path("/home/eg/data/vbr/campus/run00/kitti")) as writer:
-        with RosReader(Path("/home/eg/data/vbr/campus/run00/run00_sync_0.bag")) as reader:
+    with KittiWriter(Path("/home/eg/data/test_download/vbr_slam/campus/campus_test0/campus_test0_00_kitti")) as writer:
+        with RosReader(Path("/home/eg/data/test_download/vbr_slam/campus/campus_test0/campus_test0_00.bag")) as reader:
             for timestamp, topic, message in tqdm(reader, desc="Reading bag"):
                 # print(f"Topic={topic} | Timestamp={timestamp} (type=({type(timestamp)}) | message_type=({type(message)})")
                 writer.publish(topic, timestamp, message)
