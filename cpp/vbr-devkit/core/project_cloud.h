@@ -1,8 +1,0 @@
-//
-// Created by eg on 27/03/24.
-//
-
-#ifndef VBR_DEVKIT_PROJECT_CLOUD_H
-#define VBR_DEVKIT_PROJECT_CLOUD_H
-
-#endif //VBR_DEVKIT_PROJECT_CLOUD_H
