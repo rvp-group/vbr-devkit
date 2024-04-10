@@ -35,8 +35,6 @@ else:
     VbrSlamCaptureName = tyro.extras.literal_type_from_choices(vbr_downloads)
 
 CONSOLE = Console(width=120)
-
-
 def main(
         dataset: VbrSlamCaptureName,
         save_dir: Path,

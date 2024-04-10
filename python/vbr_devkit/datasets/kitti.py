@@ -80,8 +80,6 @@ class KittiTopicHandler:
 
         data.points.tofile(dest_path)
 
-        ...
-
     def _save_image(self, data: Image, timestamp: float):
         dest_path = self.data_f / Path(self.format_fn(self.metadata["num_messages"]) + ".png")
         if not "encoding" in self.metadata.keys():
@@ -135,12 +133,14 @@ class KittiWriter:
         for handle in self.data_handles:
             self.data_handles[handle].close()
 
+
 from ros import RosReader
 from tqdm import tqdm
 
 if __name__ == "__main__":
     with KittiWriter(Path("/home/eg/data/test_download/vbr_slam/campus/campus_test0/campus_test0_00_kitti")) as writer:
-        with RosReader(Path("/home/eg/data/test_download/vbr_slam/campus/campus_test0/campus_test0_00.bag")) as reader:
+        with RosReader(Path("/home/eg/data/test_download/vbr_slam/campus/campus_test0/campus_test0_00.bag"),
+                       topics=["/ouster/points"]) as reader:
             for timestamp, topic, message in tqdm(reader, desc="Reading bag"):
                 # print(f"Topic={topic} | Timestamp={timestamp} (type=({type(timestamp)}) | message_type=({type(message)})")
                 writer.publish(topic, timestamp, message)

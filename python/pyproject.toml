@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "vbr-devkit"
+version = "0.0.1"
+description = "Development kit for VBR SLAM dataset"
+readme = "README.md"
+authors = [
+    { name = "Emanuele Giacomini", email="giacomini@diag.uniroma1.it"},
+]
+requires-python = ">=3.8"
+
+dependencies = [
+    "natsort",
+    "numpy",
+    "rich",
+    "tqdm",
+    "typer[all]>=0.10.0",
+    "rosbags",
+    "tyro"
+]
+
+[project.scripts]
+vbr_download = "vbr_devkit.download.download_data:entrypoint"
+vbr_convert  = "vbr_devkit.datasets.convert_bag:entrypoint"
