@@ -8,9 +8,17 @@ version = "0.0.1"
 description = "Development kit for VBR SLAM dataset"
 readme = "README.md"
 authors = [
-    { name = "Emanuele Giacomini", email="giacomini@diag.uniroma1.it"},
+    { name = "Emanuele Giacomini", email = "giacomini@diag.uniroma1.it" },
 ]
 requires-python = ">=3.8"
+
+classfiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: Unix",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research"
+]
 
 dependencies = [
     "natsort",
@@ -24,4 +32,8 @@ dependencies = [
 
 [project.scripts]
 vbr_download = "vbr_devkit.download.download_data:entrypoint"
-vbr_convert  = "vbr_devkit.datasets.convert_bag:entrypoint"
+vbr_convert = "vbr_devkit.datasets.convert_bag:entrypoint"
+
+[project.urls]
+Homepage = "https://github.com/rvp-group/vbr-devkit"
+Issues = "https://github.com/rvp-group/vbr-devkit/issues"
