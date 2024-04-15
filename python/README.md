@@ -4,13 +4,13 @@
 </div>
 This kit contains utilities to work on the VBR SLAM dataset
 
-# :hammer_and_wrench: Install
+# Install
 
 ```shell
 pip install vbr-devkit
 ```
 
-# :rocket: Usage
+# Usage
 You will find here the list of available commands to interact with our dataset
 
 ## Download sequences
