@@ -21,26 +21,10 @@ jobs:
             - uses: actions/upload-artifact@v3
               with:
                 path: dist/*.tar.gz
-    
-    cibuildwheel:
-        name: Build wheels on ${{ matrix.os }}
-        runs-on: ubuntu-22.04
-        steps:
-            - uses: actions/checkout@v3
-
-            - name: Build wheels
-              if: github.event_name == 'release'
-              uses: pypa/cibuildwheel@v2.16.5
-              with:
-                  package-dir: ${{github.workspace}}/python/            
-            
-            - uses: actions/upload-artifact@v3
-              with:
-                path: ./wheelhouse/*.whl
-
+                
     pypi:
         if: github.event_name == 'release'
-        needs: [cibuildwheel, build_sdist]
+        needs: build_sdist
         runs-on: ubuntu-latest
         steps:
             - uses: actions/download-artifact@v3
