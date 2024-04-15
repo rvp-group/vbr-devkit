@@ -35,5 +35,6 @@ __pycache__
 cmake-build-debug
 
 .idea
+python/dist
 
 

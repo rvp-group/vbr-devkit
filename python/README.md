@@ -1,4 +1,7 @@
-# VBR Development Kit
+<div align="center">
+    <h1>VBR Development Kit</h1>    
+
+</div>
 This kit contains utilities to work on the VBR SLAM dataset
 
 # :hammer_and_wrench: Install
@@ -8,6 +11,7 @@ pip install vbr-devkit
 ```
 
 # :rocket: Usage
+You will find here the list of available commands to interact with our dataset
 
 ## Download sequences
 
