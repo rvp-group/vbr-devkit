@@ -7,7 +7,7 @@
     <br />
     <a href="https://github.com/rvp-group/vbr-devkit"><img src="https://github.com/rvp-group/vbr-devkit/assets/5305530/f1a8d22a-af1e-42d4-b296-d94021a980cf"/></a>   
 </div>
-This kit contains utilities to work on the VBR SLAM dataset
+This kit contains utilities to download the VBR dataset
 
 # Install
 
