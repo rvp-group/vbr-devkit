@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "vbr-devkit"
-version = "0.0.1"
+version = "0.0.2"
 description = "Development kit for VBR SLAM dataset"
 readme = "README.md"
 authors = [
