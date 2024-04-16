@@ -58,7 +58,7 @@ def download(sequence: Annotated[
 
 
 @app.command(help="Convert a sequence from ROS1 to other known formats")
-def convert(to: Annotated[OutputDataInterface, typer.Argument(help="Desired data format")],
+def convert(to: Annotated[OutputDataInterface, typer.Argument(help="Desired data format", show_default=False)],
             input_dir: Annotated[
                 Path, typer.Argument(help="Input bag or directory containing multiple bags", show_default=False)],
             output_dir: Annotated[
