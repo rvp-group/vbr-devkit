@@ -1,16 +1,13 @@
 from pathlib import Path
 import ftplib
-import tyro
-from typing import TYPE_CHECKING
-from rich.console import Console
-from rich.progress import Progress
+from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.panel import Panel
+from vbr_devkit.tools.console import console
 
 DATASET_LINK = "151.100.59.119"
 FTP_USER = "anonymous"
 
 vbr_downloads = [
-    "all",
     "campus_test0",
     "campus_test1",
     "campus_train0",
@@ -29,44 +26,51 @@ vbr_downloads = [
     "spagna_train0",
 ]
 
-if TYPE_CHECKING:
-    VbrSlamCaptureName = str
-else:
-    VbrSlamCaptureName = tyro.extras.literal_type_from_choices(vbr_downloads)
+def download_seq_fld(seq: str, output_dir: Path) -> None:
+    def human_readable_size(size, decimal_places=2):
+        for unit in ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB']:
+            if size < 1024.0 or unit == 'PiB':
+                break
+            size /= 1024.0
+        return f"{size:.{decimal_places}f} {unit}"
 
-CONSOLE = Console(width=120)
-def main(
-        dataset: VbrSlamCaptureName,
-        save_dir: Path,
-):
-    CONSOLE.rule(f"[bold green] Downloading {dataset}")
-    if dataset == "all":
-        for seq in vbr_downloads:
-            if seq != "all":
-                main(seq, save_dir)
+    console.rule(f"[bold green] Downloading {seq}")
+    # output_dir.mkdir(parents=True, exist_ok=True)
 
-
-    save_dir.mkdir(parents=True, exist_ok=True)
-
+    # Establish FTP connection
+    console.log(f"Connecting to {DATASET_LINK}")
     ftp = ftplib.FTP(DATASET_LINK)
     ftp.login(FTP_USER, "")
-    db_path = "vbr_slam/" + dataset.split("_")[0] + "/" + dataset
-    ftp.cwd(db_path)
-    try:
-        available_files = ftp.nlst()
-    except ftplib.error_perm as resp:
-        if str(resp) == "550 No files found":
-            CONSOLE.log("[bold red] Invalid input sequence")
-        else:
-            raise
+    console.log(":white_check_mark: Connection established")
+    with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            transient=True) as progress:
+        progress.add_task("Gathering files", total=None)
+        db_path = "vbr_slam/" + seq.split("_")[0] + "/" + seq
+        ftp.cwd(db_path)
 
-    CONSOLE.print(Panel(
-        " ".join([f"{f}" for f in available_files]), title="Download table"))
+        try:
+            available_files = ftp.nlst()
+            available_files = [(file, ftp.size(file)) for file in available_files]
+        except ftplib.error_perm as resp:
+            if str(resp) == "550 No files found":
+                console.log("[bold red] Invalid input sequence")
+            else:
+                raise
+        # Sort based on size
+        available_files = sorted(available_files, key=lambda x: x[1])
 
+    console.print(Panel(
+        "\n".join(f"{f[0]}\t{human_readable_size(f[1])}" for f in available_files), title="Downloading files"
+    ))
+
+    available_files = [x[0] for x in available_files]
+    # Downloading routine
     with Progress() as progress:
         for f in available_files:
-            local_path = save_dir / "vbr_slam" / dataset.split("_")[0] / dataset
-            local_path.mkdir(parents=True, exist_ok=True)
+            local_path = output_dir / "vbr_slam" / seq.split("_")[0] / seq
+            local_path.mkdir(exist_ok=True, parents=True)
             local_fname = local_path / f
             fout = open(local_fname, "wb")
             task = progress.add_task(f"Downloading {f}", total=ftp.size(f))
@@ -78,12 +82,4 @@ def main(
             ftp.retrbinary("RETR " + f, write_cb)
             fout.close()
     ftp.quit()
-    CONSOLE.print("[bold green] Done!")
-
-
-def entrypoint():
-    tyro.cli(main)
-
-
-if __name__ == "__main__":
-    entrypoint()
+    console.print(":tada: Completed")

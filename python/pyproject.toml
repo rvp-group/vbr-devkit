@@ -24,15 +24,12 @@ dependencies = [
     "natsort",
     "numpy",
     "rich",
-    "tqdm",
     "typer[all]>=0.10.0",
-    "rosbags",
-    "tyro"
+    "rosbags"
 ]
 
 [project.scripts]
-vbr_download = "vbr_devkit.download.download_data:entrypoint"
-vbr_convert = "vbr_devkit.datasets.convert_bag:entrypoint"
+vbr = "vbr_devkit.tools.run:app"
 
 [project.urls]
 Homepage = "https://github.com/rvp-group/vbr-devkit"

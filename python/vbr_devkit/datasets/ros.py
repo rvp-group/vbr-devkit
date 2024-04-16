@@ -9,7 +9,7 @@ from vbr_devkit.tools import PointCloudXf, Image, Imu
 
 
 class RosReader:
-    def __init__(self, data_dir: Sequence[Path], topics: List[str] = None, *args,
+    def __init__(self, data_dir: Union[Path, Sequence[Path]], topics: List[str] = None, *args,
                  **kwargs):
         """
         :param data_dir: Directory containing rosbags or path to a rosbag file

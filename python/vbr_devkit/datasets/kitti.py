@@ -117,7 +117,7 @@ class KittiWriter:
     def __enter__(self):
         return self
 
-    def publish(self, topic: str, timestamp, message: Union[PointCloudXf, Image, Imu]):
+    def publish(self, timestamp, topic: str, message: Union[PointCloudXf, Image, Imu]):
         if topic not in self.data_handles.keys():
             # Infer path to store stuff
             # Remove first / on topic
@@ -132,15 +132,3 @@ class KittiWriter:
     def __exit__(self, exc_type, exc_val, exc_tb):
         for handle in self.data_handles:
             self.data_handles[handle].close()
-
-
-from ros import RosReader
-from tqdm import tqdm
-
-if __name__ == "__main__":
-    with KittiWriter(Path("/home/eg/data/test_download/vbr_slam/campus/campus_test0/campus_test0_00_kitti")) as writer:
-        with RosReader(Path("/home/eg/data/test_download/vbr_slam/campus/campus_test0/campus_test0_00.bag"),
-                       topics=["/ouster/points"]) as reader:
-            for timestamp, topic, message in tqdm(reader, desc="Reading bag"):
-                # print(f"Topic={topic} | Timestamp={timestamp} (type=({type(timestamp)}) | message_type=({type(message)})")
-                writer.publish(topic, timestamp, message)
