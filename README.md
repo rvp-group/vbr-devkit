@@ -1,7 +1,7 @@
 <div align="center">
     <h1>VBR Development Kit</h1>
     <a href=""><img src=https://github.com/rvp-group/vbr-devkit/actions/workflows/python.yml/badge.svg /></a>
-    <a href=""><img alt="PyPI - Version" src="https://img.shields.io/pypi/v/vbr-devkit" /></a>
+    <a href="https://pypi.org/project/vbr-devkit/"><img alt="PyPI - Version" src="https://img.shields.io/pypi/v/vbr-devkit" /></a>
     <a href=""><img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/vbr-devkit" /></a>
     <br />
     <br />
