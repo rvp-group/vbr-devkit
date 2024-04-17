@@ -1,13 +1,13 @@
 <div align="center">
     <h1>VBR Development Kit</h1>
     <a href=""><img src=https://github.com/rvp-group/vbr-devkit/actions/workflows/python.yml/badge.svg /></a>
-    <a href=""><img alt="PyPI - Version" src="https://img.shields.io/pypi/v/vbr-devkit" /></a>
+    <a href="https://pypi.org/project/vbr-devkit/"><img alt="PyPI - Version" src="https://img.shields.io/pypi/v/vbr-devkit" /></a>
     <a href=""><img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/vbr-devkit" /></a>
     <br />
     <br />
     <a href="https://github.com/rvp-group/vbr-devkit"><img src="https://github.com/rvp-group/vbr-devkit/assets/5305530/f1a8d22a-af1e-42d4-b296-d94021a980cf"/></a>   
 </div>
-This kit contains utilities to work on the VBR SLAM dataset
+This kit contains utilities to download the VBR dataset
 
 # Install
 
