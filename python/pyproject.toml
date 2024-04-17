@@ -25,7 +25,8 @@ dependencies = [
     "numpy",
     "rich",
     "typer[all]>=0.10.0",
-    "rosbags"
+    "rosbags",
+    "rosbags.image"
 ]
 
 [project.scripts]
