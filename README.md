@@ -1,9 +1,9 @@
 <div align="center">
     <h1>VBR Development Kit</h1>
-    <h2>
+    <h3>
         <a href="https://rvp-group.net/">Project Site</a> | 
         <a href="https://arxiv.org/abs/2404.11322">Preprint</a>
-    </h2>
+    </h3>
     <a href=""><img src=https://github.com/rvp-group/vbr-devkit/actions/workflows/python.yml/badge.svg /></a>
     <a href="https://pypi.org/project/vbr-devkit/"><img alt="PyPI - Version" src="https://img.shields.io/pypi/v/vbr-devkit" /></a>
     <a href=""><img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/vbr-devkit" /></a>
