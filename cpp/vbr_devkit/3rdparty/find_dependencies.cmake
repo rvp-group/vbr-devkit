@@ -16,4 +16,4 @@ endfunction()
 
 find_external_dependency("Eigen3" "Eigen3::Eigen" "${CMAKE_CURRENT_LIST_DIR}/eigen/eigen.cmake")
 find_external_dependency("xtensor" "xtensor" "${CMAKE_CURRENT_LIST_DIR}/xtensor/xtensor.cmake")
-find_external_dependency("xtensor-python" "xtensor-python" "${CMAKE_CURRENT_LIST_DIR}/xtensor-python/xtensor-python.cmake")
+#find_external_dependency("xtensor-python" "xtensor-python" "${CMAKE_CURRENT_LIST_DIR}/xtensor-python/xtensor-python.cmake")

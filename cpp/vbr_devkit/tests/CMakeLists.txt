@@ -1,2 +1,2 @@
 add_executable(test_project test_project.cpp)
-target_link_libraries(test_project PRIVATE vbr_devkit::core)
+target_link_libraries(test_project PRIVATE vbr_devkit_core)
