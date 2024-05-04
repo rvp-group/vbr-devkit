@@ -1,10 +1,10 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["scikit_build_core", "pybind11"]
+build-backend = "scikit_build_core.build"
 
 [project]
 name = "vbr-devkit"
-version = "0.0.3"
+version = "0.0.4"
 description = "Development kit for VBR SLAM dataset"
 readme = "README.md"
 authors = [
@@ -35,3 +35,19 @@ vbr = "vbr_devkit.tools.run:app"
 [project.urls]
 Homepage = "https://github.com/rvp-group/vbr-devkit"
 Issues = "https://github.com/rvp-group/vbr-devkit/issues"
+
+[tool.scikit-build]
+build-dir = "build/{wheel_tag}"
+cmake.verbose = true
+cmake.version = ">=3.16"
+editable.mode = "redirect"
+editable.rebuild = true
+editable.verbose = true
+sdist.exclude = ["pybind11"]
+wheel.install-dir = "vbr_devkit/pybind/"
+
+[tool.black]
+line-length = 100
+
+[tool.isort]
+profile = "black"

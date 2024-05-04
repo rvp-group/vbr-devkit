@@ -104,8 +104,12 @@ class KittiTopicHandler:
         with self.metadata_f.open("w") as f:
             json.dump(self.metadata, f)
         with self.timestamps_f.open("w") as f:
+            # Handle nanosecond precision
             f.writelines([
-                str(datetime.fromtimestamp(float(t) / 1e9)) + "\n" for t in self.timestamps])
+                str(np.datetime64(t, "ns")) + "\n" for t in self.timestamps])
+            # Handle microsecond precision
+            # f.writelines([
+            #     str(datetime.fromtimestamp(float(t) / 1e9)) + "\n" for t in self.timestamps])
 
 
 class KittiWriter:

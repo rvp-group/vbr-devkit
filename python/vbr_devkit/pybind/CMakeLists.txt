@@ -22,5 +22,5 @@
 # SOFTWARE.
 
 pybind11_add_module(vbr_devkit_pybind MODULE vbr_devkit_pybind.cpp)
-#target_link_libraries(vbr_devkit_pybind PRIVATE kiss_icp::core kiss_icp::metrics)
-install(TARGETS vbr_devkit_pybind DESTINATION .)
+target_link_libraries(vbr_devkit_pybind PRIVATE vbr_devkit::core xtensor xtensor-python Python::NumPy)
+install(TARGETS vbr_devkit_pybind LIBRARY DESTINATION .)
