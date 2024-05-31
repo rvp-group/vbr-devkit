@@ -1,6 +1,5 @@
 import sys
 
-sys.path.append("/home/eg/source/vbr-devkit/python")
 import typer
 from pathlib import Path
 from rich.console import Group
