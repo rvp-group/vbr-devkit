@@ -4,11 +4,12 @@ build-backend = "hatchling.build"
 
 [project]
 name = "vbr-devkit"
-version = "0.0.4"
+version = "0.0.5"
 description = "Development kit for VBR SLAM dataset"
 readme = "README.md"
 authors = [
     { name = "Emanuele Giacomini", email = "giacomini@diag.uniroma1.it" },
+    { name = "Leonardo Brizi",     email = "brizi@diag.uniroma1.it" },
 ]
 requires-python = ">=3.8"
 
