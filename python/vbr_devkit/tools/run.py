@@ -11,7 +11,7 @@ from vbr_devkit.datasets import RosReader
 from vbr_devkit.download.download_data import vbr_downloads, download_seq_fld
 from vbr_devkit.datasets.convert_bag import OutputDataInterface, OutputDataInterface_lut
 from vbr_devkit.tools.console import console
-from rosbags import convert
+from rosbags import convert as rosconvert
 
 app = typer.Typer()
 
@@ -68,11 +68,11 @@ def convert(to: Annotated[OutputDataInterface, typer.Argument(help="Desired data
     if to == OutputDataInterface.ros2:
         if not input_dir.is_dir():
             print("Processing...")
-            convert.convert(input_dir, output_dir / input_dir.stem)
+            rosconvert.convert(input_dir, output_dir / input_dir.stem)
         else:
             for item in track(list(input_dir.iterdir()), description="Processing..."):
                 if item.suffix == '.bag':
-                    convert.convert(item, output_dir / item.stem)
+                    rosconvert.convert(item, output_dir / item.stem)
     else:
         with RosReader(input_dir) as reader:
             with OutputDataInterface_lut[to](output_dir) as writer:
