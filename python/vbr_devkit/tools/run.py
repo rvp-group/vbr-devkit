@@ -11,6 +11,7 @@ from vbr_devkit.datasets import RosReader
 from vbr_devkit.download.download_data import vbr_downloads, download_seq_fld
 from vbr_devkit.datasets.convert_bag import OutputDataInterface, OutputDataInterface_lut
 from vbr_devkit.tools.console import console
+from rosbags import convert
 
 app = typer.Typer()
 
