@@ -23,14 +23,14 @@ class RosReader:
             print("rosbags library not installed, run 'pip install -U rosbags'")
             sys.exit(-1)
 
-        if isinstance(data_dir, Path):
-            self.sequence_id = os.path.basename(data_dir).split(".")[0]
+        if data_dir.is_file():
+            #self.sequence_id = os.path.basename(data_dir).split(".")[0]
             self.bag = AnyReader([data_dir])
         else:
-            self.sequence_id = os.path.basename(data_dir[0]).split(".")[0]
-            self.bag = AnyReader(data_dir)
+            #self.sequence_id = os.path.basename(data_dir[0]).split(".")[0]
+            self.bag = AnyReader(natsort.natsorted([bag for bag in list(data_dir.glob("*.bag"))]))
             print("Reading multiple .bag files in directory:")
-            print("\n".join(natsort.natsorted([path.name for path in self.bag.paths])))
+            print("\n".join([path.name for path in self.bag.paths]))
 
         self.bag.open()
         connections = self.bag.connections

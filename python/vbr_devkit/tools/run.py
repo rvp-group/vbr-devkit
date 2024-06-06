@@ -64,10 +64,19 @@ def convert(to: Annotated[OutputDataInterface, typer.Argument(help="Desired data
                 Path, typer.Argument(help="Output directory in which the data will be stored", show_default=False)],
             ) -> None:
     console.print(f"Converting {input_dir} to {to} format at {output_dir}")
-    with RosReader(input_dir) as reader:
-        with OutputDataInterface_lut[to](output_dir) as writer:
-            for timestamp, topic, message in track(reader, description="Processing..."):
-                writer.publish(timestamp, topic, message)
+    if to == OutputDataInterface.ros2:
+        if not input_dir.is_dir():
+            print("Processing...")
+            convert.convert(input_dir, output_dir / input_dir.stem)
+        else:
+            for item in track(list(input_dir.iterdir()), description="Processing..."):
+                if item.suffix == '.bag':
+                    convert.convert(item, output_dir / item.stem)
+    else:
+        with RosReader(input_dir) as reader:
+            with OutputDataInterface_lut[to](output_dir) as writer:
+                for timestamp, topic, message in track(reader, description="Processing..."):
+                    writer.publish(timestamp, topic, message)
     console.print(":tada: Completed")
 
 
