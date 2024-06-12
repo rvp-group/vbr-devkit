@@ -53,7 +53,7 @@ class KittiTopicHandler:
             self.metadata["topic"] = topic
             self.metadata["num_messages"] = 0
 
-    def push_back(self, data: Union[PointCloudXf, Image, Imu], timestamp):
+    def push_back(self, data: Union[PointCloudXf, Image, Imu], timestamp, *args, **kwargs):
         if "msg_type" not in self.metadata:
             self.metadata["msg_type"] = data.__class__.__name__
 
@@ -61,11 +61,11 @@ class KittiTopicHandler:
             raise RuntimeError(
                 f"TopicHandler is bound to {self.metadata['msg_type']}. Cannot handle data of type {type(data)}")
 
-        self.save_fn[self.metadata["msg_type"]](data, timestamp)
+        self.save_fn[self.metadata["msg_type"]](data, timestamp, *args, **kwargs)
         self.timestamps.append(timestamp)
         self.metadata["num_messages"] += 1
 
-    def _save_cloud(self, data: PointCloudXf, timestamp):
+    def _save_cloud(self, data: PointCloudXf, timestamp, *args, **kwargs):
         dest_path = self.data_f / Path(self.format_fn(self.metadata["num_messages"]) + ".bin")
         # Save fields to metadata to recover it later.
         # We assume fields to remain constant through data of this topic
@@ -78,16 +78,28 @@ class KittiTopicHandler:
             with open(self.data_f / ".dtype.pkl", "wb") as f:
                 pickle.dump(data.points.dtype, f)
 
-        data.points.tofile(dest_path)
+        if "pcloud_kitti_format" in kwargs:
+            if kwargs.get("pcloud_kitti_format"):
+                clip_points = np.stack([data.points["x"], data.points["y"], data.points["z"], data.points["intensity"]],
+                                       axis=1)
+                clip_points.tofile(dest_path)
+        else:
+            data.points.tofile(dest_path)
 
-    def _save_image(self, data: Image, timestamp: float):
+    def _save_image(self, data: Image, timestamp: float, *args, **kwargs):
         dest_path = self.data_f / Path(self.format_fn(self.metadata["num_messages"]) + ".png")
+
+        if "rgb_convert" in kwargs:
+            if kwargs.get("rgb_convert"):
+                data.image = cv2.cvtColor(data.image, cv2.COLOR_BAYER_RG2RGB)
+                data.encoding = "rgb8"
+
         if not "encoding" in self.metadata.keys():
             self.metadata["encoding"] = data.encoding
 
         cv2.imwrite(str(dest_path), data.image)
 
-    def _save_imu(self, data: Imu, timestamp: float):
+    def _save_imu(self, data: Imu, timestamp: float, *args, **kwargs):
         if not self.imu_dest:
             self.imu_dest = (self.data_f / "imu.txt").open("w")
             self.imu_dest.write(IMU_CSV_HEADER)
@@ -109,10 +121,12 @@ class KittiTopicHandler:
 
 
 class KittiWriter:
-    def __init__(self, data_dir: Path):
+    def __init__(self, data_dir: Path, rgb_convert: bool = True, pcloud_kitti_format: bool = True, *args, **kwargs):
         data_dir.mkdir(parents=True, exist_ok=True)
         self.destination_dir = data_dir
         self.data_handles = {}
+        self.rgb_convert = rgb_convert
+        self.pcloud_kitti_format = pcloud_kitti_format
 
     def __enter__(self):
         return self
@@ -127,7 +141,8 @@ class KittiWriter:
             self.data_handles[topic] = KittiTopicHandler(self.destination_dir / Path(handle_dir), topic,
                                                          lambda x: f"{x:010d}")
 
-        self.data_handles[topic].push_back(message, timestamp)
+        self.data_handles[topic].push_back(message, timestamp, rgb_convert=self.rgb_convert,
+                                           pcloud_kitti_format=self.pcloud_kitti_format)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         for handle in self.data_handles:

@@ -63,7 +63,16 @@ def convert(to: Annotated[OutputDataInterface, typer.Argument(help="Desired data
                 Path, typer.Argument(help="Input bag or directory containing multiple bags", show_default=False)],
             output_dir: Annotated[
                 Path, typer.Argument(help="Output directory in which the data will be stored", show_default=False)],
-            ) -> None:
+            rgb_conversion: Annotated[
+                bool, typer.Option(
+                    help="Enable BayerRG8->RGB conversion during conversion in KITTI format."
+                         " Disable this flag to reduce the memory footprint of the converted folder.",
+                    show_default=True)] = True,
+            reduce_pcloud: Annotated[
+                bool, typer.Option(
+                    help="Preserve only <x,y,z,intensity> channels during PointCloud conversion in KITTI format. "
+                         "Allows compatibility with KITTI readers but removes extra LiDAR channels",
+                    show_default=True)] = True) -> None:
     console.print(f"Converting {input_dir} to {to} format at {output_dir}")
     if to == OutputDataInterface.ros2:
         if not input_dir.is_dir():
@@ -75,7 +84,8 @@ def convert(to: Annotated[OutputDataInterface, typer.Argument(help="Desired data
                     rosconvert.convert(item, output_dir / item.stem)
     else:
         with RosReader(input_dir) as reader:
-            with OutputDataInterface_lut[to](output_dir) as writer:
+            with OutputDataInterface_lut[to](output_dir, rgb_convert=rgb_conversion,
+                                             pcloud_kitti_format=reduce_pcloud) as writer:
                 for timestamp, topic, message in track(reader, description="Processing..."):
                     writer.publish(timestamp, topic, message)
     console.print(":tada: Completed")
