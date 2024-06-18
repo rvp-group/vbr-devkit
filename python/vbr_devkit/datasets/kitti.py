@@ -83,8 +83,9 @@ class KittiTopicHandler:
                 clip_points = np.stack([data.points["x"], data.points["y"], data.points["z"], data.points["intensity"]],
                                        axis=1)
                 clip_points.tofile(dest_path)
-        else:
-            data.points.tofile(dest_path)
+                return
+
+        data.points.tofile(dest_path)
 
     def _save_image(self, data: Image, timestamp: float, *args, **kwargs):
         dest_path = self.data_f / Path(self.format_fn(self.metadata["num_messages"]) + ".png")
@@ -117,7 +118,7 @@ class KittiTopicHandler:
             json.dump(self.metadata, f)
         with self.timestamps_f.open("w") as f:
             f.writelines([
-                str(datetime.fromtimestamp(float(t) / 1e9)) + "\n" for t in self.timestamps])
+                str(np.datetime64(t, "ns")) + "\n" for t in self.timestamps])
 
 
 class KittiWriter:
