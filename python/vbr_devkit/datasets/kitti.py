@@ -82,7 +82,7 @@ class KittiTopicHandler:
             if kwargs.get("pcloud_kitti_format"):
                 clip_points = np.stack([data.points["x"], data.points["y"], data.points["z"], data.points["intensity"]],
                                        axis=1)
-                clip_points.tofile(dest_path)
+                clip_points.astype(np.float32).tofile(dest_path)
                 return
 
         data.points.tofile(dest_path)
