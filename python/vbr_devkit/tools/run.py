@@ -75,13 +75,20 @@ def convert(to: Annotated[OutputDataInterface, typer.Argument(help="Desired data
                     show_default=True)] = True) -> None:
     console.print(f"Converting {input_dir} to {to} format at {output_dir}")
     if to == OutputDataInterface.ros2:
-        if not input_dir.is_dir():
-            print("Processing...")
-            rosconvert.convert(input_dir, output_dir / input_dir.stem)
-        else:
-            for item in track(list(input_dir.iterdir()), description="Processing..."):
-                if item.suffix == '.bag':
-                    rosconvert.convert(item, output_dir / item.stem)
+        print("Processing...")
+        rosconvert.convert(
+            sorted([f for f in input_dir.glob("*.bag")]) if input_dir.is_dir() else [input_dir],
+            output_dir / input_dir.stem,
+            dst_version=None,
+            compress=None,
+            compress_mode="file",
+            default_typestore=None,
+            typestore=None,
+            exclude_topics=[],
+            include_topics=[],
+            exclude_msgtypes=[],
+            include_msgtypes=[]
+        )
     else:
         with RosReader(input_dir) as reader:
             with OutputDataInterface_lut[to](output_dir, rgb_convert=rgb_conversion,
