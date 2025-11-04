@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "vbr-devkit"
-version = "0.1.0"
+version = "0.2.0"
 description = "Development kit for VBR SLAM dataset"
 readme = "README.md"
 authors = [
@@ -26,7 +26,7 @@ dependencies = [
     "numpy",
     "rich",
     "typer[all]>=0.10.0",
-    "rosbags",
+    "rosbags==0.11.0",
     "rosbags.image"
 ]
 

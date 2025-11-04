@@ -1,10 +1,11 @@
 from typing import Any, Union
 
-from rosbags.typesys.types import (
+from rosbags.typesys.stores.ros1_noetic import (
     sensor_msgs__msg__Imu,
     sensor_msgs__msg__Image,
     sensor_msgs__msg__PointCloud2
 )
+
 from vbr_devkit.tools.image import Image
 from vbr_devkit.tools.imu import Imu
 from vbr_devkit.tools.point_cloud2 import PointCloudXf

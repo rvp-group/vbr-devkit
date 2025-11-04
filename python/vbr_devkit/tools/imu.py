@@ -1,7 +1,9 @@
 import numpy as np
 
 try:
-    from rosbags.typesys.types import sensor_msgs__msg__Imu
+    from rosbags.typesys.stores.ros1_noetic import (
+        sensor_msgs__msg__Imu
+    )
 except ImportError as e:
     raise ImportError('rosbags library not installed, run "pip install -U rosbags"') from e
 
