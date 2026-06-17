@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "vbr-devkit"
-version = "0.1.1"
+version = "0.1.2"
 description = "Development kit for VBR SLAM dataset"
 readme = "README.md"
 authors = [
@@ -13,7 +13,7 @@ authors = [
 ]
 requires-python = ">=3.8"
 
-classfiers = [
+classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: BSD License",
     "Operating System :: Unix",
@@ -25,13 +25,14 @@ dependencies = [
     "natsort",
     "numpy",
     "rich",
-    "typer[all]>=0.10.0",
+    "typer>=0.10.0",
     "rosbags==0.11.0",
-    "rosbags.image"
+    "rosbags-image[opencv-headless]"
 ]
 
 [project.scripts]
 vbr = "vbr_devkit.tools.run:app"
+vbr-devkit = "vbr_devkit.tools.run:app"
 
 [project.urls]
 Homepage = "https://github.com/rvp-group/vbr-devkit"

@@ -19,6 +19,21 @@ This kit contains utilities to download the VBR dataset
 pip install vbr-devkit
 ```
 
+## Run without installing (uvx)
+
+If you have [uv](https://docs.astral.sh/uv/) installed, you can run the kit without installing it into your environment:
+
+```shell
+uvx vbr-devkit list
+```
+
+`uvx` fetches the package into a temporary, isolated environment and runs it. Any `vbr` command works through the `vbr-devkit` entry point, for example:
+
+```shell
+uvx vbr-devkit download campus_train0 ~/data/
+uvx vbr-devkit convert kitti <input.bag> <output_dir>
+```
+
 You can install autocompletion for our package by typing:
 
 ```shell
