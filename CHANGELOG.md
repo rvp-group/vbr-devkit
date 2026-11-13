@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.1
+
+### Added
+- `vbr --version` (`-V`) prints the installed version.
+
 ## 1.0.0
 
 ### Changed

@@ -12,14 +12,23 @@ from vbr_devkit.download.download_data import vbr_downloads, download_sequences
 from vbr_devkit.download.registry import FileKind, resolve_sequences
 from vbr_devkit.datasets.convert_bag import OutputDataInterface, OutputDataInterface_lut
 from vbr_devkit.tools.console import console
-from vbr_devkit.tools.update_check import warn_if_outdated
+from vbr_devkit.tools.update_check import installed_version, warn_if_outdated
 from rosbags import convert as rosconvert
 
 app = typer.Typer()
 
 
+def _version_callback(value: bool) -> None:
+    if value:
+        console.print(f"vbr-devkit {installed_version()}")
+        warn_if_outdated()
+        raise typer.Exit()
+
+
 @app.callback()
-def main() -> None:
+def main(version: Annotated[
+    Optional[bool], typer.Option("--version", "-V", help="Show the installed version and exit.",
+                                 callback=_version_callback, is_eager=True)] = None) -> None:
     """Development kit for the VBR SLAM dataset."""
     warn_if_outdated()
 
