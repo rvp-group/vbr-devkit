@@ -5,15 +5,23 @@ from pathlib import Path
 from rich.console import Group
 from rich.panel import Panel
 from rich.progress import track
-from typing import Sequence
+from typing import List, Optional, Sequence
 from typing_extensions import Annotated
 from vbr_devkit.datasets import RosReader
-from vbr_devkit.download.download_data import vbr_downloads, download_seq_fld
+from vbr_devkit.download.download_data import vbr_downloads, download_sequences
+from vbr_devkit.download.registry import FileKind, resolve_sequences
 from vbr_devkit.datasets.convert_bag import OutputDataInterface, OutputDataInterface_lut
 from vbr_devkit.tools.console import console
+from vbr_devkit.tools.update_check import warn_if_outdated
 from rosbags import convert as rosconvert
 
 app = typer.Typer()
+
+
+@app.callback()
+def main() -> None:
+    """Development kit for the VBR SLAM dataset."""
+    warn_if_outdated()
 
 
 @app.command("list",
@@ -35,26 +43,34 @@ def complete_sequence(incomplete: str) -> Sequence[str]:
 
 @app.command(help="Download one or more VBR sequences. Type 'vbr list' to see the available sequences.")
 def download(sequence: Annotated[
-    str, typer.Argument(help="Name of the sequence to download", show_default=False, autocompletion=complete_sequence)],
+    str, typer.Argument(help="Name of the sequence to download, or 'all', 'train', 'test'", show_default=False,
+                        autocompletion=complete_sequence)],
              output_dir: Annotated[
-                 Path, typer.Argument(help="Output directory. The sequence will be stored in a sub-folder",
-                                      show_default=False)]) -> None:
-    if sequence == "all":
-        console.print(":boom: Downloading all sequences")
+                 Path, typer.Argument(help="Output directory. Files are stored in <output_dir>/vbr_slam/<location>/<sequence>/",
+                                      show_default=False)],
+             only: Annotated[
+                 Optional[List[FileKind]], typer.Option(
+                     help="Download only these file kinds (repeatable): calib, gt, bags. Default: everything.",
+                     show_default=False)] = None,
+             skip_existing: Annotated[
+                 bool, typer.Option(help="Skip files already present with the expected size.")] = True,
+             verify: Annotated[
+                 bool, typer.Option(help="Verify SHA-256 checksums of downloaded files, when available.")] = True,
+             dry_run: Annotated[
+                 bool, typer.Option(help="Only show what would be downloaded.")] = False) -> None:
+    try:
+        seqs = resolve_sequences(sequence)
+    except KeyError:
+        console.log(
+            f":thinking_face: Error {sequence} is not a valid sequence. Type 'vbr list' to see available sequences.")
+        sys.exit(-1)
+    if len(seqs) > 1:
+        console.print(f":package: Downloading {len(seqs)} sequences ({sequence})")
         console.print("[yellow] It will take a while")
-        for seq in vbr_downloads:
-            download_seq_fld(seq, output_dir)
-    elif sequence == "train" or sequence == "test":
-        console.print(f":woman_student: Downloading {sequence} sequences")
-        console.print("[yellow] It will take a while")
-        for seq in filter(lambda x: f"{sequence}" in x, vbr_downloads):
-            download_seq_fld(seq, output_dir)
-    else:
-        if sequence not in vbr_downloads:
-            console.log(
-                f":thinking_face: Error {sequence} is not a valid sequence. Type 'vbr list' to see available sequences.")
-            sys.exit(-1)
-        download_seq_fld(sequence, output_dir)
+    failed = download_sequences(seqs, output_dir, kinds=only, skip_existing=skip_existing, verify=verify,
+                                dry_run=dry_run)
+    if failed:
+        sys.exit(1)
 
 
 @app.command(help="Convert a sequence from ROS1 to other known formats")

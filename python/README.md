@@ -75,6 +75,20 @@ data
         - campus_train0_04.bag                     
 ```
 
+Files are downloaded over HTTPS from `https://www.diag.uniroma1.it/<sequence_name>/<file>`. Interrupted downloads are resumed: just run the same command again, files already present are skipped.
+
+Useful options:
+
+```shell
+vbr download all ~/data/ --dry-run                     # list files and total size, download nothing
+vbr download train ~/data/ --only calib --only gt      # only calibration and ground truth (no bags)
+vbr download campus_train0 ~/data/ --no-skip-existing  # re-download everything
+```
+
+The download server can be overridden with the `VBR_BASE_URL` environment variable (e.g. for a mirror).
+
+`vbr` checks PyPI at most once a day and prints a warning when a newer version is available. Set `VBR_NO_UPDATE_CHECK=1` to disable it.
+
 ## Convert format
 
 The sequences are provided in ROS1 format. We offer a convenient tool to change representation if you prefer working on a different format.

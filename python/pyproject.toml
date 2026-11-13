@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "vbr-devkit"
-version = "0.1.2"
+version = "1.0.0"
 description = "Development kit for VBR SLAM dataset"
 readme = "README.md"
 authors = [
@@ -23,12 +23,16 @@ classifiers = [
 
 dependencies = [
     "natsort",
+    "requests>=2.25",
     "numpy",
     "rich",
     "typer>=0.10.0",
     "rosbags==0.11.0",
     "rosbags-image[opencv-headless]"
 ]
+
+[project.optional-dependencies]
+test = ["pytest"]
 
 [project.scripts]
 vbr = "vbr_devkit.tools.run:app"

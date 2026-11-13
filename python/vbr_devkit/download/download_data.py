@@ -1,85 +1,98 @@
+"""Download VBR sequences over HTTPS."""
 from pathlib import Path
-import ftplib
-from rich.progress import Progress, SpinnerColumn, TextColumn
+from typing import Iterable, List, Optional
+
+import requests
 from rich.panel import Panel
+from rich.progress import (BarColumn, DownloadColumn, Progress, TextColumn, TimeRemainingColumn,
+                           TransferSpeedColumn)
+from rich.table import Table
+
+from vbr_devkit.download.registry import FileKind, RemoteFile, remote_files, sequences
+from vbr_devkit.download.transfer import DownloadError, fetch, is_complete
 from vbr_devkit.tools.console import console
 
-DATASET_LINK = "151.100.59.119"
-FTP_USER = "anonymous"
+vbr_downloads = sequences()
 
-vbr_downloads = [
-    "campus_test0",
-    "campus_test1",
-    "campus_train0",
-    "campus_train1",
-    "ciampino_test0",
-    "ciampino_test1",
-    "ciampino_train0",
-    "ciampino_train1",
-    "colosseo_test0",
-    "colosseo_train0",
-    "diag_test0",
-    "diag_train0",
-    "pincio_test0",
-    "pincio_train0",
-    "spagna_test0",
-    "spagna_train0",
-]
 
-def download_seq_fld(seq: str, output_dir: Path) -> None:
-    def human_readable_size(size, decimal_places=2):
-        for unit in ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB']:
-            if size < 1024.0 or unit == 'PiB':
-                break
-            size /= 1024.0
-        return f"{size:.{decimal_places}f} {unit}"
+def human_readable_size(size: float, decimal_places: int = 2) -> str:
+    for unit in ["B", "KiB", "MiB", "GiB", "TiB", "PiB"]:
+        if size < 1024.0 or unit == "PiB":
+            break
+        size /= 1024.0
+    return f"{size:.{decimal_places}f} {unit}"
 
-    console.rule(f"[bold green] Downloading {seq}")
-    # output_dir.mkdir(parents=True, exist_ok=True)
 
-    # Establish FTP connection
-    console.log(f"Connecting to {DATASET_LINK}")
-    ftp = ftplib.FTP(DATASET_LINK)
-    ftp.login(FTP_USER, "")
-    console.log(":white_check_mark: Connection established")
-    with Progress(
-            SpinnerColumn(),
+def _plan_table(files: List[RemoteFile], skip: set) -> Table:
+    table = Table(box=None, show_header=True, header_style="bold")
+    table.add_column("File")
+    table.add_column("Size", justify="right")
+    table.add_column("Status")
+    for f in files:
+        status = "[green]present" if f in skip else ""
+        table.add_row(f"{f.sequence}/{f.name}", human_readable_size(f.size), status)
+    return table
+
+
+def download_sequences(seqs: Iterable[str],
+                       output_dir: Path,
+                       kinds: Optional[Iterable[FileKind]] = None,
+                       skip_existing: bool = True,
+                       verify: bool = True,
+                       dry_run: bool = False,
+                       retries: int = 5,
+                       backoff: float = 2.0) -> List[RemoteFile]:
+    """Download the given sequences into ``output_dir/vbr_slam/<location>/<sequence>/``.
+
+    Returns the list of files that failed (empty on success).
+    """
+    files = remote_files(seqs, kinds)
+    skip = set()
+    if skip_existing:
+        # Full-file hashing of existing multi-GB bags is slow: only size is checked here,
+        # freshly downloaded files are hashed when a checksum is available.
+        skip = {f for f in files if is_complete(f.local_path(output_dir), f.size)}
+    todo = [f for f in files if f not in skip]
+
+    total = sum(f.size for f in files)
+    remaining = sum(f.size for f in todo)
+    console.print(Panel(_plan_table(files, skip),
+                        title=f"{len(files)} files, {human_readable_size(total)} "
+                              f"({human_readable_size(remaining)} to download)"))
+    if dry_run or not todo:
+        if not todo:
+            console.print(":white_check_mark: Everything already downloaded")
+        return []
+
+    failed: List[RemoteFile] = []
+    with requests.Session() as session, Progress(
             TextColumn("[progress.description]{task.description}"),
-            transient=True) as progress:
-        progress.add_task("Gathering files", total=None)
-        db_path = "vbr_slam/" + seq.split("_")[0] + "/" + seq
-        ftp.cwd(db_path)
+            BarColumn(),
+            DownloadColumn(binary_units=True),
+            TransferSpeedColumn(),
+            TimeRemainingColumn(),
+            console=console) as progress:
+        overall = progress.add_task("[bold]Total", total=remaining)
+        done_before = 0
+        for f in todo:
+            task = progress.add_task(f"{f.sequence}/{f.name}", total=f.size)
 
-        try:
-            available_files = ftp.nlst()
-            available_files = [(file, ftp.size(file)) for file in available_files]
-        except ftplib.error_perm as resp:
-            if str(resp) == "550 No files found":
-                console.log("[bold red] Invalid input sequence")
-            else:
-                raise
-        # Sort based on size
-        available_files = sorted(available_files, key=lambda x: x[1])
+            def on_progress(n: int, task=task, base=done_before) -> None:
+                progress.update(task, completed=n)
+                progress.update(overall, completed=base + n)
 
-    console.print(Panel(
-        "\n".join(f"{f[0]}\t{human_readable_size(f[1])}" for f in available_files), title="Downloading files"
-    ))
+            try:
+                fetch(f.url, f.local_path(output_dir), f.size, f.sha256 if verify else None,
+                      session=session, retries=retries, backoff=backoff, on_progress=on_progress)
+            except DownloadError as exc:
+                progress.console.log(f"[bold red]:x: {f.sequence}/{f.name}: {exc}")
+                failed.append(f)
+            done_before += f.size
+            progress.update(overall, completed=done_before)
+            progress.remove_task(task)
 
-    available_files = [x[0] for x in available_files]
-    # Downloading routine
-    with Progress() as progress:
-        for f in available_files:
-            local_path = output_dir / "vbr_slam" / seq.split("_")[0] / seq
-            local_path.mkdir(exist_ok=True, parents=True)
-            local_fname = local_path / f
-            fout = open(local_fname, "wb")
-            task = progress.add_task(f"Downloading {f}", total=ftp.size(f))
-
-            def write_cb(data):
-                progress.update(task, advance=len(data))
-                fout.write(data)
-
-            ftp.retrbinary("RETR " + f, write_cb)
-            fout.close()
-    ftp.quit()
-    console.print(":tada: Completed")
+    if failed:
+        console.print(f"[bold red]{len(failed)} file(s) failed. Re-run the same command to resume.")
+    else:
+        console.print(":tada: Completed")
+    return failed

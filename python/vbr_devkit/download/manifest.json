@@ -1,0 +1,892 @@
+{
+ "version": 1,
+ "base_url": "https://www.diag.uniroma1.it",
+ "url_template": "{base_url}/{sequence}/{name}",
+ "sequences": {
+  "campus_test0": {
+   "location": "campus",
+   "files": [
+    {
+     "name": "campus_test0_00.bag",
+     "size": 10742165802,
+     "sha256": null
+    },
+    {
+     "name": "campus_test0_01.bag",
+     "size": 10742168247,
+     "sha256": null
+    },
+    {
+     "name": "campus_test0_02.bag",
+     "size": 10742168446,
+     "sha256": null
+    },
+    {
+     "name": "campus_test0_03.bag",
+     "size": 10742168637,
+     "sha256": null
+    },
+    {
+     "name": "campus_test0_04.bag",
+     "size": 4316655997,
+     "sha256": null
+    },
+    {
+     "name": "vbr_calib.yaml",
+     "size": 2603,
+     "sha256": null
+    }
+   ]
+  },
+  "campus_test1": {
+   "location": "campus",
+   "files": [
+    {
+     "name": "campus_test1_00.bag",
+     "size": 10742123682,
+     "sha256": null
+    },
+    {
+     "name": "campus_test1_01.bag",
+     "size": 10742167489,
+     "sha256": null
+    },
+    {
+     "name": "campus_test1_02.bag",
+     "size": 10742168314,
+     "sha256": null
+    },
+    {
+     "name": "campus_test1_03.bag",
+     "size": 5505953124,
+     "sha256": null
+    },
+    {
+     "name": "vbr_calib.yaml",
+     "size": 2603,
+     "sha256": null
+    }
+   ]
+  },
+  "campus_train0": {
+   "location": "campus",
+   "files": [
+    {
+     "name": "campus_train0_00.bag",
+     "size": 10742125775,
+     "sha256": null
+    },
+    {
+     "name": "campus_train0_01.bag",
+     "size": 10742168377,
+     "sha256": null
+    },
+    {
+     "name": "campus_train0_02.bag",
+     "size": 10742167489,
+     "sha256": null
+    },
+    {
+     "name": "campus_train0_03.bag",
+     "size": 10742168948,
+     "sha256": null
+    },
+    {
+     "name": "campus_train0_04.bag",
+     "size": 3392934647,
+     "sha256": null
+    },
+    {
+     "name": "campus_train0_gt.txt",
+     "size": 1043566,
+     "sha256": null
+    },
+    {
+     "name": "vbr_calib.yaml",
+     "size": 2603,
+     "sha256": null
+    }
+   ]
+  },
+  "campus_train1": {
+   "location": "campus",
+   "files": [
+    {
+     "name": "campus_train1_00.bag",
+     "size": 10742167369,
+     "sha256": null
+    },
+    {
+     "name": "campus_train1_01.bag",
+     "size": 10742124999,
+     "sha256": null
+    },
+    {
+     "name": "campus_train1_02.bag",
+     "size": 10742168253,
+     "sha256": null
+    },
+    {
+     "name": "campus_train1_03.bag",
+     "size": 10742168247,
+     "sha256": null
+    },
+    {
+     "name": "campus_train1_04.bag",
+     "size": 1968819305,
+     "sha256": null
+    },
+    {
+     "name": "campus_train1_gt.txt",
+     "size": 1001969,
+     "sha256": null
+    },
+    {
+     "name": "vbr_calib.yaml",
+     "size": 2603,
+     "sha256": null
+    }
+   ]
+  },
+  "ciampino_test0": {
+   "location": "ciampino",
+   "files": [
+    {
+     "name": "ciampino_test0_00.bag",
+     "size": 10742171790,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_test0_01.bag",
+     "size": 10742168822,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_test0_02.bag",
+     "size": 10742168320,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_test0_03.bag",
+     "size": 10742168125,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_test0_04.bag",
+     "size": 10518088915,
+     "sha256": null
+    },
+    {
+     "name": "vbr_calib.yaml",
+     "size": 2603,
+     "sha256": null
+    }
+   ]
+  },
+  "ciampino_test1": {
+   "location": "ciampino",
+   "files": [
+    {
+     "name": "ciampino_test1_00.bag",
+     "size": 10742166355,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_test1_01.bag",
+     "size": 10742168247,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_test1_02.bag",
+     "size": 10742167749,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_test1_03.bag",
+     "size": 6506653732,
+     "sha256": null
+    },
+    {
+     "name": "vbr_calib.yaml",
+     "size": 2603,
+     "sha256": null
+    }
+   ]
+  },
+  "ciampino_train0": {
+   "location": "ciampino",
+   "files": [
+    {
+     "name": "ciampino_train0_00.bag",
+     "size": 10742163274,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_train0_01.bag",
+     "size": 10742168826,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_train0_02.bag",
+     "size": 10742168440,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_train0_03.bag",
+     "size": 10742167875,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_train0_04.bag",
+     "size": 10742168247,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_train0_05.bag",
+     "size": 10742167749,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_train0_06.bag",
+     "size": 10742169078,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_train0_07.bag",
+     "size": 10742169460,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_train0_08.bag",
+     "size": 10742169208,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_train0_09.bag",
+     "size": 10742168954,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_train0_10.bag",
+     "size": 10742169393,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_train0_11.bag",
+     "size": 1093102055,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_train0_gt.txt",
+     "size": 2695866,
+     "sha256": null
+    },
+    {
+     "name": "vbr_calib.yaml",
+     "size": 2603,
+     "sha256": null
+    }
+   ]
+  },
+  "ciampino_train1": {
+   "location": "ciampino",
+   "files": [
+    {
+     "name": "ciampino_train1_00.bag",
+     "size": 10742169047,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_train1_01.bag",
+     "size": 10742167556,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_train1_02.bag",
+     "size": 10742168629,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_train1_03.bag",
+     "size": 10742167489,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_train1_04.bag",
+     "size": 10742168629,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_train1_05.bag",
+     "size": 10742168948,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_train1_06.bag",
+     "size": 8086463806,
+     "sha256": null
+    },
+    {
+     "name": "ciampino_train1_gt.txt",
+     "size": 1627738,
+     "sha256": null
+    },
+    {
+     "name": "vbr_calib.yaml",
+     "size": 2603,
+     "sha256": null
+    }
+   ]
+  },
+  "colosseo_test0": {
+   "location": "colosseo",
+   "files": [
+    {
+     "name": "colosseo_test0_00.bag",
+     "size": 10746109115,
+     "sha256": null
+    },
+    {
+     "name": "colosseo_test0_01.bag",
+     "size": 10744169002,
+     "sha256": null
+    },
+    {
+     "name": "colosseo_test0_02.bag",
+     "size": 10740452529,
+     "sha256": null
+    },
+    {
+     "name": "colosseo_test0_03.bag",
+     "size": 10740277242,
+     "sha256": null
+    },
+    {
+     "name": "colosseo_test0_04.bag",
+     "size": 10747085979,
+     "sha256": null
+    },
+    {
+     "name": "colosseo_test0_05.bag",
+     "size": 10740283444,
+     "sha256": null
+    },
+    {
+     "name": "colosseo_test0_06.bag",
+     "size": 2961402781,
+     "sha256": null
+    },
+    {
+     "name": "vbr_calib.yaml",
+     "size": 2603,
+     "sha256": null
+    }
+   ]
+  },
+  "colosseo_train0": {
+   "location": "colosseo",
+   "files": [
+    {
+     "name": "colosseo_train0_00.bag",
+     "size": 10747081186,
+     "sha256": null
+    },
+    {
+     "name": "colosseo_train0_01.bag",
+     "size": 10740454873,
+     "sha256": null
+    },
+    {
+     "name": "colosseo_train0_02.bag",
+     "size": 10744166577,
+     "sha256": null
+    },
+    {
+     "name": "colosseo_train0_03.bag",
+     "size": 10744172003,
+     "sha256": null
+    },
+    {
+     "name": "colosseo_train0_04.bag",
+     "size": 10745143327,
+     "sha256": null
+    },
+    {
+     "name": "colosseo_train0_05.bag",
+     "size": 10746116158,
+     "sha256": null
+    },
+    {
+     "name": "colosseo_train0_06.bag",
+     "size": 10740457272,
+     "sha256": null
+    },
+    {
+     "name": "colosseo_train0_07.bag",
+     "size": 10746108201,
+     "sha256": null
+    },
+    {
+     "name": "colosseo_train0_08.bag",
+     "size": 10740457272,
+     "sha256": null
+    },
+    {
+     "name": "colosseo_train0_09.bag",
+     "size": 10740283630,
+     "sha256": null
+    },
+    {
+     "name": "colosseo_train0_10.bag",
+     "size": 10747080910,
+     "sha256": null
+    },
+    {
+     "name": "colosseo_train0_11.bag",
+     "size": 380477207,
+     "sha256": null
+    },
+    {
+     "name": "colosseo_train0_gt.txt",
+     "size": 759517,
+     "sha256": null
+    },
+    {
+     "name": "vbr_calib.yaml",
+     "size": 2603,
+     "sha256": null
+    }
+   ]
+  },
+  "diag_test0": {
+   "location": "diag",
+   "files": [
+    {
+     "name": "diag_test0_00.bag",
+     "size": 10740447305,
+     "sha256": null
+    },
+    {
+     "name": "diag_test0_01.bag",
+     "size": 10746108075,
+     "sha256": null
+    },
+    {
+     "name": "diag_test0_02.bag",
+     "size": 10744171878,
+     "sha256": null
+    },
+    {
+     "name": "diag_test0_03.bag",
+     "size": 10740453113,
+     "sha256": null
+    },
+    {
+     "name": "diag_test0_04.bag",
+     "size": 10746110600,
+     "sha256": null
+    },
+    {
+     "name": "diag_test0_05.bag",
+     "size": 7491476103,
+     "sha256": null
+    },
+    {
+     "name": "vbr_calib.yaml",
+     "size": 2603,
+     "sha256": null
+    }
+   ]
+  },
+  "diag_train0": {
+   "location": "diag",
+   "files": [
+    {
+     "name": "diag_train0_00.bag",
+     "size": 10741243399,
+     "sha256": null
+    },
+    {
+     "name": "diag_train0_01.bag",
+     "size": 10744172761,
+     "sha256": null
+    },
+    {
+     "name": "diag_train0_02.bag",
+     "size": 10740454872,
+     "sha256": null
+    },
+    {
+     "name": "diag_train0_03.bag",
+     "size": 10743194371,
+     "sha256": null
+    },
+    {
+     "name": "diag_train0_04.bag",
+     "size": 10743199549,
+     "sha256": null
+    },
+    {
+     "name": "diag_train0_05.bag",
+     "size": 10740454370,
+     "sha256": null
+    },
+    {
+     "name": "diag_train0_06.bag",
+     "size": 10745138524,
+     "sha256": null
+    },
+    {
+     "name": "diag_train0_07.bag",
+     "size": 10746116791,
+     "sha256": null
+    },
+    {
+     "name": "diag_train0_08.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "diag_train0_09.bag",
+     "size": 10742227472,
+     "sha256": null
+    },
+    {
+     "name": "diag_train0_10.bag",
+     "size": 10740454497,
+     "sha256": null
+    },
+    {
+     "name": "diag_train0_11.bag",
+     "size": 10740283945,
+     "sha256": null
+    },
+    {
+     "name": "diag_train0_12.bag",
+     "size": 5882111630,
+     "sha256": null
+    },
+    {
+     "name": "diag_train0_gt.txt",
+     "size": 858654,
+     "sha256": null
+    },
+    {
+     "name": "vbr_calib.yaml",
+     "size": 2603,
+     "sha256": null
+    }
+   ]
+  },
+  "pincio_test0": {
+   "location": "pincio",
+   "files": [
+    {
+     "name": "pincio_test0_00.bag",
+     "size": 10740447618,
+     "sha256": null
+    },
+    {
+     "name": "pincio_test0_01.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "pincio_test0_02.bag",
+     "size": 10740451841,
+     "sha256": null
+    },
+    {
+     "name": "pincio_test0_03.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "pincio_test0_04.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "pincio_test0_05.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "pincio_test0_06.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "pincio_test0_07.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "pincio_test0_08.bag",
+     "size": 10747080152,
+     "sha256": null
+    },
+    {
+     "name": "pincio_test0_09.bag",
+     "size": 10740451967,
+     "sha256": null
+    },
+    {
+     "name": "pincio_test0_10.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "pincio_test0_11.bag",
+     "size": 10741110470,
+     "sha256": null
+    },
+    {
+     "name": "pincio_test0_12.bag",
+     "size": 10740159913,
+     "sha256": null
+    },
+    {
+     "name": "pincio_test0_13.bag",
+     "size": 1337390984,
+     "sha256": null
+    },
+    {
+     "name": "vbr_calib.yaml",
+     "size": 2603,
+     "sha256": null
+    }
+   ]
+  },
+  "pincio_train0": {
+   "location": "pincio",
+   "files": [
+    {
+     "name": "pincio_train0_00.bag",
+     "size": 10742213390,
+     "sha256": null
+    },
+    {
+     "name": "pincio_train0_01.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "pincio_train0_02.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "pincio_train0_03.bag",
+     "size": 10740448809,
+     "sha256": null
+    },
+    {
+     "name": "pincio_train0_04.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "pincio_train0_05.bag",
+     "size": 10740450325,
+     "sha256": null
+    },
+    {
+     "name": "pincio_train0_06.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "pincio_train0_07.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "pincio_train0_08.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "pincio_train0_09.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "pincio_train0_10.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "pincio_train0_11.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "pincio_train0_12.bag",
+     "size": 10740451967,
+     "sha256": null
+    },
+    {
+     "name": "pincio_train0_13.bag",
+     "size": 10183823480,
+     "sha256": null
+    },
+    {
+     "name": "pincio_train0_gt.txt",
+     "size": 944865,
+     "sha256": null
+    },
+    {
+     "name": "vbr_calib.yaml",
+     "size": 2603,
+     "sha256": null
+    }
+   ]
+  },
+  "spagna_test0": {
+   "location": "spagna",
+   "files": [
+    {
+     "name": "spagna_test0_00.bag",
+     "size": 10740445720,
+     "sha256": null
+    },
+    {
+     "name": "spagna_test0_01.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "spagna_test0_02.bag",
+     "size": 10740450325,
+     "sha256": null
+    },
+    {
+     "name": "spagna_test0_03.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "spagna_test0_04.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "spagna_test0_05.bag",
+     "size": 1949334059,
+     "sha256": null
+    },
+    {
+     "name": "vbr_calib.yaml",
+     "size": 2603,
+     "sha256": null
+    }
+   ]
+  },
+  "spagna_train0": {
+   "location": "spagna",
+   "files": [
+    {
+     "name": "spagna_train0_00.bag",
+     "size": 10746105551,
+     "sha256": null
+    },
+    {
+     "name": "spagna_train0_01.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "spagna_train0_02.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "spagna_train0_03.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "spagna_train0_04.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "spagna_train0_05.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "spagna_train0_06.bag",
+     "size": 10740449441,
+     "sha256": null
+    },
+    {
+     "name": "spagna_train0_07.bag",
+     "size": 10740455124,
+     "sha256": null
+    },
+    {
+     "name": "spagna_train0_08.bag",
+     "size": 10740448809,
+     "sha256": null
+    },
+    {
+     "name": "spagna_train0_09.bag",
+     "size": 10747083311,
+     "sha256": null
+    },
+    {
+     "name": "spagna_train0_10.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "spagna_train0_11.bag",
+     "size": 10740450325,
+     "sha256": null
+    },
+    {
+     "name": "spagna_train0_12.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "spagna_train0_13.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "spagna_train0_14.bag",
+     "size": 10740449441,
+     "sha256": null
+    },
+    {
+     "name": "spagna_train0_15.bag",
+     "size": 10740450325,
+     "sha256": null
+    },
+    {
+     "name": "spagna_train0_16.bag",
+     "size": 10740449567,
+     "sha256": null
+    },
+    {
+     "name": "spagna_train0_17.bag",
+     "size": 7533749296,
+     "sha256": null
+    },
+    {
+     "name": "spagna_train0_gt.txt",
+     "size": 1222053,
+     "sha256": null
+    },
+    {
+     "name": "vbr_calib.yaml",
+     "size": 2603,
+     "sha256": null
+    }
+   ]
+  }
+ }
+}
