@@ -12,9 +12,16 @@ from vbr_devkit.download.download_data import vbr_downloads, download_sequences
 from vbr_devkit.download.registry import FileKind, resolve_sequences
 from vbr_devkit.datasets.convert_bag import OutputDataInterface, OutputDataInterface_lut
 from vbr_devkit.tools.console import console
+from vbr_devkit.tools.update_check import warn_if_outdated
 from rosbags import convert as rosconvert
 
 app = typer.Typer()
+
+
+@app.callback()
+def main() -> None:
+    """Development kit for the VBR SLAM dataset."""
+    warn_if_outdated()
 
 
 @app.command("list",

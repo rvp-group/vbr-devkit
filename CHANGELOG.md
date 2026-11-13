@@ -14,6 +14,8 @@
   continues where it stopped and skips files already downloaded.
 - `--only {calib,gt,bags}`, `--dry-run`, `--skip-existing/--no-skip-existing`, `--verify/--no-verify`.
 - `VBR_BASE_URL` environment variable to override the download server.
+- Update check: at most once a day `vbr` queries PyPI (2 s timeout, silent on errors) and warns on
+  stderr when a newer release exists. Disable with `VBR_NO_UPDATE_CHECK=1`.
 - Test suite (`pytest python/tests`).
 
 ### Removed
