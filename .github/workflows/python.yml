@@ -20,4 +20,7 @@ jobs:
           python -m pip install --upgrade pip
       - name: Build pip package
         run: |
-          python -m pip install --verbose ./python/
+          python -m pip install --verbose "./python/[test]"
+      - name: Run tests
+        run: |
+          python -m pytest -v python/tests
